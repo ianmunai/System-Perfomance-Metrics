@@ -93,7 +93,7 @@ end
 
 %system one
 num=[25]; den=[1 6 25];
-t=0:0.005:5; [y,x,t]=step(num,den,t);
+t=0:0.005:5 [y,x,t]=step(num,den,t);
 figure
 plot(t,y)
 grid on
@@ -101,8 +101,8 @@ title('Unit step response 1st')
 
 %Here, the rise time is evaluated as the time taken for the output to rise
 %from 10% to 90% of final value
-r1=1;while y(r1)<0.1;  r1=r1+1;end
-r2=1;while y(r2)<0.9;  r2=r2+1;end
+r1=1;while y(r1)<0.1,r1=r1+1;end
+r2=1;while y(r2)<0.9,r2=r2+1;end
 rise_time1=(r2-r1)*0.005 %obtaining the rise time
 [ymax,tp]= max(y); %remember peak time is the time required to peak
 peak_time1=(tp-1)*0.005 %obtaining the peak time
@@ -165,7 +165,23 @@ setlling_time3=(s-1)*0.01
 %     hold on
 %     grid on
 %     pause (1)
-end
+ end
+ 
+ p=0;
+sys=tf(120,conv(conv([1 4],[1 40]),[1 0]));
+
+figure
+bode(sys)
+grid on
+[Gm,Pm,wpc,wgc]=margin(sys);
+GmdB=20*log10(Gm);
+p=p+1;
+metrics(p,:)=[GmdB,Pm];
+% disp(metrics)
+T = table(GmdB,Pm,'VariableNames',{'Gain Margin','Phase Margin'})
+
+figure
+nyquist(sys)
 
  
  
